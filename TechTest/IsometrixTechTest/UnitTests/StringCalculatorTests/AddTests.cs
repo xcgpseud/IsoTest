@@ -98,4 +98,18 @@ public class AddTests
             .Should()
             .Throw<InvalidDelimiterFormatException>();
     }
+
+    [Test]
+    public void Add_InvalidDelimiter_ThrowsException()
+    {
+        const string inputNumbers = "100invalid200";
+        const string inputString = $"//[**]\n{inputNumbers}";
+
+        Action act = () => StringCalculator.Add(inputString);
+
+        act
+            .Should()
+            .Throw<FormatException>()
+            .WithMessage($"The input string '{inputNumbers}' was not in a correct format.");
+    }
 }
