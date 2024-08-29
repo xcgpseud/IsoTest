@@ -67,6 +67,18 @@ public class DeleteTests : LinkedListTestBase
     }
 
     [Test]
+    public void Delete_LastNode_CorrectlyRemovesLastNode()
+    {
+        var list = CreateGenericLinkedList(100, 200, 300);
+
+        var node = list.GetHeadNode().NextNode?.NextNode;
+
+        node.Should().NotBeNull();
+
+        list.Delete(node);
+    }
+
+    [Test]
     public void Delete_OutOfBoundsPosition_ThrowsException()
     {
         var list = CreateGenericLinkedList(100, 200, 300);

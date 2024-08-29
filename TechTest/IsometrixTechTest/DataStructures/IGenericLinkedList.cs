@@ -8,6 +8,8 @@ public interface IGenericLinkedList<T>
 
     // I opted to return the inserted node once created - some languages have a void response here
     public INode<T> Insert(INode<T> nodeToInsertAfter, T newNodeValue);
+    
+    public INode<T> Insert(int position, T newNodeValue);
 
     // Will append to the last node
     public INode<T> Insert(T newNodeValue);

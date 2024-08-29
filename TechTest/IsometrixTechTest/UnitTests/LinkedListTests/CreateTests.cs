@@ -16,10 +16,10 @@ public class CreateTests : LinkedListTestBase
         var boolList = GenericLinkedList<bool>.Create();
         var objectList = GenericLinkedList<TestModel>.Create();
 
-        intList.GetHeadNode().Should().BeNull();
-        stringList.GetHeadNode().Should().BeNull();
-        boolList.GetHeadNode().Should().BeNull();
-        objectList.GetHeadNode().Should().BeNull();
+        intList.GetHeadNode().Value.Should().Be(0);
+        stringList.GetHeadNode().Value.Should().BeNull();
+        boolList.GetHeadNode().Value.Should().Be(false);
+        objectList.GetHeadNode().Value.Should().BeNull();
     }
 
     [Test]
@@ -30,9 +30,9 @@ public class CreateTests : LinkedListTestBase
         const bool testBoolData = true;
         const string testObjectData = "Test Model Data";
 
-        var intList = GenericLinkedList<int>.Create(10);
-        var stringList = GenericLinkedList<string>.Create("hello");
-        var boolList = GenericLinkedList<bool>.Create(true);
+        var intList = GenericLinkedList<int>.Create(testIntData);
+        var stringList = GenericLinkedList<string>.Create(testStringData);
+        var boolList = GenericLinkedList<bool>.Create(testBoolData);
         var objectList = GenericLinkedList<TestModel>.Create(
             new TestModel
             {
@@ -44,6 +44,6 @@ public class CreateTests : LinkedListTestBase
         intList.GetHeadNode().Value.Should().Be(testIntData);
         stringList.GetHeadNode().Value.Should().Be(testStringData);
         boolList.GetHeadNode().Value.Should().Be(testBoolData);
-        objectList.GetHeadNode().Value.Data.Should().Be(testObjectData);
+        objectList.GetHeadNode().Value?.Data.Should().Be(testObjectData);
     }
 }
