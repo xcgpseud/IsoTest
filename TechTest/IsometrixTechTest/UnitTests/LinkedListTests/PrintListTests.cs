@@ -9,7 +9,6 @@ namespace UnitTests.LinkedListTests;
 public class PrintListTests : LinkedListTestBase
 {
     [Test]
-    // Decided to keep default value and not null here, as I'm a fan of this approach (null references are a pain!)
     public void PrintList_EmptyList_ReturnsDefaultValueAsString()
     {
         var intList = GenericLinkedList<int>.Create();
@@ -21,6 +20,14 @@ public class PrintListTests : LinkedListTestBase
         stringList.PrintList().Should().Be(string.Empty);
         boolList.PrintList().Should().Be("False");
         objectList.PrintList().Should().Be(string.Empty);
+    }
+
+    [Test]
+    public void PrintList_WithSingleNode_ReturnsNodeValue()
+    {
+        var intList = CreateGenericLinkedList(100);
+
+        intList.PrintList().Should().Be("100");
     }
 
     [Test]

@@ -45,6 +45,27 @@ public class GenericLinkedList<T> : IGenericLinkedList<T>
         return newNode;
     }
 
+    public INode<T> Insert(int position, T newNodeValue)
+    {
+        var newNode = new Node<T>
+        {
+            Value = newNodeValue,
+        };
+
+        if (position == 0)
+        {
+            newNode.NextNode = GetHeadNode();
+            HeadNode = newNode;
+
+            return newNode;
+        }
+
+        var nodeAtPosition = GetNodeAtPosition(position - 1);
+        nodeAtPosition.NextNode = newNode;
+
+        return newNode;
+    }
+
     // The spec said "Insert" should just insert at any position, but I thought realistically an Insert with Append
     // behaviour might also be nice
     public INode<T> Insert(T newNodeValue)
@@ -54,7 +75,7 @@ public class GenericLinkedList<T> : IGenericLinkedList<T>
         {
             last = last.NextNode;
         }
-        
+
         var newNode = new Node<T> { Value = newNodeValue };
         last.NextNode = newNode;
 
@@ -89,7 +110,7 @@ public class GenericLinkedList<T> : IGenericLinkedList<T>
     {
         var currentNode = GetHeadNode();
         var response = "";
-        
+
         // We have nothing in this list at all
         if (currentNode.Value == null && currentNode.NextNode == null)
         {
@@ -109,8 +130,25 @@ public class GenericLinkedList<T> : IGenericLinkedList<T>
         response += currentNode.Value;
 
         return response;
-        
+
         // (Alternatively you could loop values, add them to a list and then string.Join the list, but you iterate
         // twice which feels wasteful)
+    }
+
+    private INode<T> GetNodeAtPosition(int position)
+    {
+        var node = GetHeadNode();
+
+        for (var i = 0; i < position; i++)
+        {
+            node = node?.NextNode;
+        }
+
+        if (node == null)
+        {
+            throw new NodeNotFoundInListException();
+        }
+
+        return node;
     }
 }
