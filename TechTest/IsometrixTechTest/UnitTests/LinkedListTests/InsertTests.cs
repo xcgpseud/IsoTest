@@ -2,6 +2,7 @@ using NUnit.Framework;
 using DataStructures;
 using DataStructures.Exceptions;
 using FluentAssertions;
+using UnitTests.Models;
 
 namespace UnitTests.LinkedListTests;
 
@@ -28,23 +29,48 @@ public class InsertTests : LinkedListTestBase
     [Test]
     public void Insert_SupplyNodeAndNewValue_InsertsAfterGivenNode()
     {
-        var list = CreateGenericLinkedList(100, 200, 300);
+        var (
+            (intValues, intList),
+            (stringValues, stringList),
+            (boolValues, boolList),
+            (testModelValues, testModelList)
+            ) = GenerateTestData(3).SplitIntoTuples();
 
-        var secondNode = list.GetHeadNode().NextNode;
-        secondNode.Should().NotBeNull();
+        var intNode = intList.GetHeadNode().NextNode;
+        intNode.Should().NotBeNull();
+        intList.Insert(intNode, 1000);
 
-        var newNode = list.Insert(secondNode, 900);
-        newNode.Value.Should().Be(900);
-        newNode.NextNode?.Value.Should().Be(300);
+        var stringNode = stringList.GetHeadNode().NextNode;
+        stringNode.Should().NotBeNull();
+        stringList.Insert(stringNode, "HELLO");
 
-        // Use the last node as our node to insert after to make sure we can do that too
-        list.Insert(newNode.NextNode, 5);
-        newNode.NextNode?.NextNode?.Value.Should().Be(5);
+        var boolNode = boolList.GetHeadNode().NextNode;
+        boolNode.Should().NotBeNull();
+        boolList.Insert(boolNode, true);
 
-        // Do a hard check of the order just to be sure - not super tidy but valuable to know
-        list.GetHeadNode().NextNode?.Value.Should().Be(200);
-        list.GetHeadNode().NextNode?.NextNode?.Value.Should().Be(900);
-        list.GetHeadNode().NextNode?.NextNode?.NextNode?.Value.Should().Be(300);
+        var testModelNode = testModelList.GetHeadNode().NextNode;
+        testModelNode.Should().NotBeNull();
+        testModelList.Insert(
+            testModelNode,
+            new TestModel
+            {
+                Guid = Guid.Empty,
+                Data = "HELLO",
+            }
+        );
+
+        intNode.NextNode?.Value.Should().Be(1000);
+        intNode.NextNode?.NextNode?.Value.Should().Be(intValues.ToArray()[2]);
+
+        stringNode.NextNode?.Value.Should().Be("HELLO");
+        stringNode.NextNode?.NextNode?.Value.Should().Be(stringValues.ToArray()[2]);
+        
+        boolNode.NextNode?.Value.Should().Be(true);
+        boolNode.NextNode?.NextNode?.Value.Should().Be(boolValues.ToArray()[2]);
+
+        testModelNode.NextNode?.Value.Should().NotBeNull();
+        testModelNode.NextNode?.Value?.Guid.Should().Be(Guid.Empty);
+        testModelNode.NextNode?.Value?.Data.Should().Be("HELLO");
     }
 
     [Test]

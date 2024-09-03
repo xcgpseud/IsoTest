@@ -36,7 +36,7 @@ public class CreateTests : LinkedListTestBase
         var objectList = GenericLinkedList<TestModel>.Create(
             new TestModel
             {
-                Id = 1,
+                Guid = Guid.NewGuid(),
                 Data = testObjectData,
             }
         );

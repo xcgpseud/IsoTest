@@ -43,7 +43,7 @@ public class DeleteTests : LinkedListTestBase
         var objectList = CreateGenericLinkedList(
             new TestModel
             {
-                Id = 1,
+                Guid = Guid.NewGuid(),
                 Data = "hello world",
             }
         );

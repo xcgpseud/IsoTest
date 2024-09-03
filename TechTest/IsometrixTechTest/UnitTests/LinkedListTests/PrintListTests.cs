@@ -11,40 +11,56 @@ public class PrintListTests : LinkedListTestBase
     [Test]
     public void PrintList_EmptyList_ReturnsDefaultValueAsString()
     {
-        var intList = GenericLinkedList<int>.Create();
-        var stringList = GenericLinkedList<string>.Create();
-        var boolList = GenericLinkedList<bool>.Create();
-        var objectList = GenericLinkedList<TestModel>.Create();
+        var ((_, intList),
+            (_, stringList),
+            (_, boolList),
+            (_, testModelList)) = GenerateTestData(0).SplitIntoTuples();
+
+        AssertLinkedListValues(intList, []);
+        AssertLinkedListValues(stringList, []);
+        AssertLinkedListValues(boolList, []);
+        AssertLinkedListValues(testModelList, []);
 
         intList.PrintList().Should().Be("0");
         stringList.PrintList().Should().Be(string.Empty);
         boolList.PrintList().Should().Be("False");
-        objectList.PrintList().Should().Be(string.Empty);
+        testModelList.PrintList().Should().Be(string.Empty);
     }
 
     [Test]
     public void PrintList_WithSingleNode_ReturnsNodeValue()
     {
-        var intList = CreateGenericLinkedList(100);
+        var (
+            (intValues, intList),
+            (stringValues, stringList),
+            (boolValues, boolList),
+            (testModelValues, testModelList)
+            ) = GenerateTestData(1).SplitIntoTuples();
 
-        intList.PrintList().Should().Be("100");
+        intList.PrintList().Should().Be(intValues.First().ToString());
+        stringList.PrintList().Should().Be(stringValues.First());
+        boolList.PrintList().Should().Be(boolValues.First().ToString());
+        testModelList.PrintList().Should().Be(testModelValues.First().ToString());
     }
 
     [Test]
     public void PrintList_ReturnsEveryNodeInCorrectFormat()
     {
-        var intList = CreateGenericLinkedList(100, 200, 300);
-        var stringList = CreateGenericLinkedList("hello", "world");
-        var boolList = CreateGenericLinkedList(true, false, true);
-        var objectList = CreateGenericLinkedList(
-            new TestModel { Id = 1, Data = "Hello World" },
-            new TestModel { Id = 2, Data = "Goodbye Moon" }
-        );
+        var (
+            (intValues, intList),
+            (stringValues, stringList),
+            (boolValues, boolList),
+            (testModelValues, testModelList)
+            ) = GenerateTestData(3).SplitIntoTuples();
 
-        intList.PrintList().Should().Be("100 -> 200 -> 300");
-        stringList.PrintList().Should().Be("hello -> world");
-        boolList.PrintList().Should().Be("True -> False -> True");
-        // (See custom ToString on TestModel)
-        objectList.PrintList().Should().Be("ID: 1, Data: Hello World -> ID: 2, Data: Goodbye Moon");
+        var expectedIntPrint = string.Join(" -> ", intValues);
+        var expectedStringPrint = string.Join(" -> ", stringValues);
+        var expectedBoolPrint = string.Join(" -> ", boolValues);
+        var expectedTestModelPrint = string.Join(" -> ", testModelValues);
+
+        intList.PrintList().Should().Be(expectedIntPrint);
+        stringList.PrintList().Should().Be(expectedStringPrint);
+        boolList.PrintList().Should().Be(expectedBoolPrint);
+        testModelList.PrintList().Should().Be(expectedTestModelPrint);
     }
 }
