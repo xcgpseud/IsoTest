@@ -20,6 +20,12 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+    - name: Restore dependencies
+      working-directory: ./TechTest/IsometrixTechTest
+      run: dotnet restore
+    - name: Build
+      working-directory: ./TechTest/IsometrixTechTest
+      run: dotnet build --no-restore
     - name: Test
       working-directory: ./TechTest/IsometrixTechTest/UnitTests
-      run: dotnet test --verbosity minimal
+      run: dotnet test --no-build --verbosity minimal
