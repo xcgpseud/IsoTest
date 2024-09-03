@@ -106,6 +106,30 @@ public class GenericLinkedList<T> : IGenericLinkedList<T>
         currentNode.NextNode = nodeToDelete.NextNode;
     }
 
+    public IGenericLinkedList<T> Map(Func<T?, T?> mapFunction)
+    {
+        var newList = Create();
+        var newNode = newList.GetHeadNode();
+
+        for (
+            var node = GetHeadNode();
+            node != null;
+            node = node.NextNode
+        )
+        {
+            if (newNode == null)
+            {
+                throw new NodeNotFoundInListException();
+            }
+
+            newNode.Value = mapFunction(node.Value);
+            newNode.NextNode = new Node<T>();
+            newNode = newNode.NextNode;
+        }
+
+        return newList;
+    }
+
     public string PrintList()
     {
         var currentNode = GetHeadNode();
