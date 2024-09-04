@@ -12,12 +12,11 @@ public class PrintListTests : LinkedListTestBase
     public void PrintList_EmptyList_ReturnsDefaultValueAsString()
     {
         // Arrange
-        var (
-            (_, intList),
-            (_, stringList),
-            (_, boolList),
-            (_, testModelList)
-            ) = GenerateTestData(0).SplitIntoTuples();
+        var testData = GenerateTestData(0);
+        var intList = testData.IntLinkedList;
+        var stringList = testData.StringLinkedList;
+        var boolList = testData.BoolLinkedList;
+        var testModelList = testData.TestModelLinkedList;
 
         // Act
         // Assert
@@ -36,12 +35,11 @@ public class PrintListTests : LinkedListTestBase
     public void PrintList_WithSingleNode_ReturnsNodeValue()
     {
         // Arrange
-        var (
-            (intValues, intList),
-            (stringValues, stringList),
-            (boolValues, boolList),
-            (testModelValues, testModelList)
-            ) = GenerateTestData(1).SplitIntoTuples();
+        var testData = GenerateTestData(1);
+        var (intValues, intList) = testData.GetIntData();
+        var (stringValues, stringList) = testData.GetStringData();
+        var (boolValues, boolList) = testData.GetBoolData();
+        var (testModelValues, testModelList) = testData.GetTestModelData();
 
         // Act
         // Assert
@@ -55,12 +53,11 @@ public class PrintListTests : LinkedListTestBase
     public void PrintList_ReturnsEveryNodeInCorrectFormat()
     {
         // Arrange
-        var (
-            (intValues, intList),
-            (stringValues, stringList),
-            (boolValues, boolList),
-            (testModelValues, testModelList)
-            ) = GenerateTestData(3).SplitIntoTuples();
+        var testData = GenerateTestData(3);
+        var (intValues, intList) = testData.GetIntData();
+        var (stringValues, stringList) = testData.GetStringData();
+        var (boolValues, boolList) = testData.GetBoolData();
+        var (testModelValues, testModelList) = testData.GetTestModelData();
         
         var expectedIntPrint = string.Join(" -> ", intValues);
         var expectedStringPrint = string.Join(" -> ", stringValues);
