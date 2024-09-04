@@ -94,10 +94,15 @@ public class LinkedListTestBase
 
         return new TestDataStruct
         {
-            IntData = (intData, CreateGenericLinkedList(intData)),
-            StringData = (stringData, CreateGenericLinkedList(stringData)),
-            BooleanData = (boolData, CreateGenericLinkedList(boolData)),
-            TestModelData = (testModelData, CreateGenericLinkedList(testModelData)),
+            IntValues = intData,
+            StringValues = stringData,
+            BoolValues = boolData,
+            TestModelValues = testModelData,
+
+            IntLinkedList = CreateGenericLinkedList(intData),
+            StringLinkedList = CreateGenericLinkedList(stringData),
+            BoolLinkedList = CreateGenericLinkedList(boolData),
+            TestModelLinkedList = CreateGenericLinkedList(testModelData),
         };
     }
 }

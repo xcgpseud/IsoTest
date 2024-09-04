@@ -14,12 +14,11 @@ public class DeleteTests : LinkedListTestBase
     public void Delete_CorrectlyRemovesNodeAtGivenPosition()
     {
         // Arrange
-        var (
-            (intValues, intList),
-            (stringValues, stringList),
-            (boolValues, boolList),
-            (testModelValues, testModelList)
-            ) = GenerateTestData(3).SplitIntoTuples();
+        var testData = GenerateTestData(3);
+        var (intValues, intList) = testData.GetIntData();
+        var (stringValues, stringList) = testData.GetStringData();
+        var (boolValues, boolList) = testData.GetBoolData();
+        var (testModelValues, testModelList) = testData.GetTestModelData();
 
         var intNode = intList.GetHeadNode().NextNode;
         var stringNode = stringList.GetHeadNode().NextNode;
@@ -48,12 +47,11 @@ public class DeleteTests : LinkedListTestBase
     public void Delete_HeadNode_WithExistingNextNode_SetsHeadAsNextNode()
     {
         // Arrange
-        var (
-            (intValues, intList),
-            (stringValues, stringList),
-            (boolValues, boolList),
-            (testModelValues, testModelList)
-            ) = GenerateTestData(3).SplitIntoTuples();
+        var testData = GenerateTestData(3);
+        var (intValues, intList) = testData.GetIntData();
+        var (stringValues, stringList) = testData.GetStringData();
+        var (boolValues, boolList) = testData.GetBoolData();
+        var (testModelValues, testModelList) = testData.GetTestModelData();
 
         // Act
         intList.Delete(intList.GetHeadNode());
@@ -72,12 +70,11 @@ public class DeleteTests : LinkedListTestBase
     public void Delete_HeadNode_WithNoExistingNextNode_SetsHeadAsEmptyNode_WithDefaultValue()
     {
         // Arrange
-        var (
-            (_, intList),
-            (_, stringList),
-            (_, boolList),
-            (_, testModelList)
-            ) = GenerateTestData(1).SplitIntoTuples();
+        var testData = GenerateTestData(1);
+        var intList = testData.IntLinkedList;
+        var stringList = testData.StringLinkedList;
+        var boolList = testData.BoolLinkedList;
+        var testModelList = testData.TestModelLinkedList;
 
         // Act
         intList.Delete(intList.GetHeadNode());
@@ -103,13 +100,12 @@ public class DeleteTests : LinkedListTestBase
     public void Delete_LastNode_CorrectlyRemovesLastNode()
     {
         // Arrange
-        var (
-            (intValues, intList),
-            (stringValues, stringList),
-            (boolValues, boolList),
-            (testModelValues, testModelList)
-            ) = GenerateTestData(2).SplitIntoTuples();
-        
+        var testData = GenerateTestData(2);
+        var (intValues, intList) = testData.GetIntData();
+        var (stringValues, stringList) = testData.GetStringData();
+        var (boolValues, boolList) = testData.GetBoolData();
+        var (testModelValues, testModelList) = testData.GetTestModelData();
+
         var intNode = intList.GetHeadNode().NextNode;
         var stringNode = stringList.GetHeadNode().NextNode;
         var boolNode = boolList.GetHeadNode().NextNode;
@@ -137,12 +133,11 @@ public class DeleteTests : LinkedListTestBase
     public void Delete_OutOfBoundsPosition_ThrowsException()
     {
         // Arrange
-        var (
-            (_, intList),
-            (_, stringList),
-            (_, boolList),
-            (_, testModelList)
-            ) = GenerateTestData(2).SplitIntoTuples();
+        var testData = GenerateTestData(1);
+        var intList = testData.IntLinkedList;
+        var stringList = testData.StringLinkedList;
+        var boolList = testData.BoolLinkedList;
+        var testModelList = testData.TestModelLinkedList;
 
         // Act
         var intAction = () => intList.Delete(new Node<int> { Value = TestIntValue });

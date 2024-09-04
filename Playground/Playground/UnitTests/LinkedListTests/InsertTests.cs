@@ -14,12 +14,11 @@ public class InsertTests : LinkedListTestBase
     public void Insert_OnlySupplyingNewValue_AppendsToList()
     {
         // Arrange
-        var (
-            (intValues, intList),
-            (stringValues, stringList),
-            (boolValues, boolList),
-            (testModelValues, testModelList)
-            ) = GenerateTestData(2).SplitIntoTuples();
+        var testData = GenerateTestData(2);
+        var (intValues, intList) = testData.GetIntData();
+        var (stringValues, stringList) = testData.GetStringData();
+        var (boolValues, boolList) = testData.GetBoolData();
+        var (testModelValues, testModelList) = testData.GetTestModelData();
 
         // Act
         intList.Insert(TestIntValue);
@@ -38,12 +37,11 @@ public class InsertTests : LinkedListTestBase
     public void Insert_SupplyNodeInMiddleOfList_AndNewValue_InsertsAfterGivenNode()
     {
         // Arrange
-        var (
-            (intValues, intList),
-            (stringValues, stringList),
-            (boolValues, boolList),
-            (testModelValues, testModelList)
-            ) = GenerateTestData(3).SplitIntoTuples();
+        var testData = GenerateTestData(3);
+        var (intValues, intList) = testData.GetIntData();
+        var (stringValues, stringList) = testData.GetStringData();
+        var (boolValues, boolList) = testData.GetBoolData();
+        var (testModelValues, testModelList) = testData.GetTestModelData();
 
         var intNode = intList.GetHeadNode().NextNode;
         var stringNode = stringList.GetHeadNode().NextNode;
@@ -66,17 +64,14 @@ public class InsertTests : LinkedListTestBase
             intList,
             [intValues[0], intValues[1], TestIntValue, intValues[2]]
         );
-
         AssertLinkedListOrder(
             stringList,
             [stringValues[0], stringValues[1], TestStringValue, stringValues[2]]
         );
-
         AssertLinkedListOrder(
             boolList,
             [boolValues[0], boolValues[1], TestBoolValue, boolValues[2]]
         );
-
         AssertLinkedListOrder(
             testModelList,
             [testModelValues[0], testModelValues[1], TestModelValue, testModelValues[2]]
@@ -87,12 +82,11 @@ public class InsertTests : LinkedListTestBase
     public void Insert_SupplyFinalNodeAndNewValue_AppendsToList()
     {
         // Arrange
-        var (
-            (intValues, intList),
-            (stringValues, stringList),
-            (boolValues, boolList),
-            (testModelValues, testModelList)
-            ) = GenerateTestData(2).SplitIntoTuples();
+        var testData = GenerateTestData(2);
+        var (intValues, intList) = testData.GetIntData();
+        var (stringValues, stringList) = testData.GetStringData();
+        var (boolValues, boolList) = testData.GetBoolData();
+        var (testModelValues, testModelList) = testData.GetTestModelData();
 
         var finalIntNode = intList.GetHeadNode().NextNode;
         var finalStringNode = stringList.GetHeadNode().NextNode;
@@ -121,12 +115,11 @@ public class InsertTests : LinkedListTestBase
     public void Insert_SupplyPositionAndNewValue_InsertsAtGivenPosition()
     {
         // Arrange
-        var (
-            (intValues, intList),
-            (stringValues, stringList),
-            (boolValues, boolList),
-            (testModelValues, testModelList)
-            ) = GenerateTestData(2).SplitIntoTuples();
+        var testData = GenerateTestData(2);
+        var (intValues, intList) = testData.GetIntData();
+        var (stringValues, stringList) = testData.GetStringData();
+        var (boolValues, boolList) = testData.GetBoolData();
+        var (testModelValues, testModelList) = testData.GetTestModelData();
 
         // Act
         intList.Insert(1, TestIntValue);
@@ -145,12 +138,11 @@ public class InsertTests : LinkedListTestBase
     public void Insert_SupplyPositionJustAfterLastValue_AppendsToList()
     {
         // Arrange
-        var (
-            (intValues, intList),
-            (stringValues, stringList),
-            (boolValues, boolList),
-            (testModelValues, testModelList)
-            ) = GenerateTestData(2).SplitIntoTuples();
+        var testData = GenerateTestData(2);
+        var (intValues, intList) = testData.GetIntData();
+        var (stringValues, stringList) = testData.GetStringData();
+        var (boolValues, boolList) = testData.GetBoolData();
+        var (testModelValues, testModelList) = testData.GetTestModelData();
 
         // Act
         intList.Insert(2, TestIntValue);
@@ -169,18 +161,13 @@ public class InsertTests : LinkedListTestBase
     public void Insert_SupplyInvalidPosition_ThrowsException()
     {
         // Arrange
-        var (
-            (_, intList),
-            (_, stringList),
-            (_, boolList),
-            (_, testModelList)
-            ) = GenerateTestData(2).SplitIntoTuples();
+        var testData = GenerateTestData(2);
 
         // Act
-        var intAction = () => intList.Insert(100, TestIntValue);
-        var stringAction = () => stringList.Insert(100, TestStringValue);
-        var boolAction = () => boolList.Insert(100, TestBoolValue);
-        var testModelAction = () => testModelList.Insert(100, TestModelValue);
+        var intAction = () => testData.IntLinkedList.Insert(100, TestIntValue);
+        var stringAction = () => testData.StringLinkedList.Insert(100, TestStringValue);
+        var boolAction = () => testData.BoolLinkedList.Insert(100, TestBoolValue);
+        var testModelAction = () => testData.TestModelLinkedList.Insert(100, TestModelValue);
 
         // Assert
         intAction.Should().Throw<NodeNotFoundInListException>();
