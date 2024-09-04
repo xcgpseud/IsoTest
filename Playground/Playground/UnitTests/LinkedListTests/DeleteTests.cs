@@ -13,6 +13,7 @@ public class DeleteTests : LinkedListTestBase
     [Test]
     public void Delete_CorrectlyRemovesNodeAtGivenPosition()
     {
+        // Arrange
         var (
             (intValues, intList),
             (stringValues, stringList),
@@ -30,20 +31,23 @@ public class DeleteTests : LinkedListTestBase
         boolNode.Should().NotBeNull();
         testModelNode.Should().NotBeNull();
 
+        // Act
         intList.Delete(intNode);
         stringList.Delete(stringNode);
         boolList.Delete(boolNode);
         testModelList.Delete(testModelNode);
 
-        AssertLinkedListValues(intList, [intValues[0], intValues[2]]);
-        AssertLinkedListValues(stringList, [stringValues[0], stringValues[2]]);
-        AssertLinkedListValues(boolList, [boolValues[0], boolValues[2]]);
-        AssertLinkedListValues(testModelList, [testModelValues[0], testModelValues[2]]);
+        // Assert
+        AssertLinkedListOrder(intList, [intValues[0], intValues[2]]);
+        AssertLinkedListOrder(stringList, [stringValues[0], stringValues[2]]);
+        AssertLinkedListOrder(boolList, [boolValues[0], boolValues[2]]);
+        AssertLinkedListOrder(testModelList, [testModelValues[0], testModelValues[2]]);
     }
 
     [Test]
     public void Delete_HeadNode_WithExistingNextNode_SetsHeadAsNextNode()
     {
+        // Arrange
         var (
             (intValues, intList),
             (stringValues, stringList),
@@ -51,20 +55,23 @@ public class DeleteTests : LinkedListTestBase
             (testModelValues, testModelList)
             ) = GenerateTestData(3).SplitIntoTuples();
 
+        // Act
         intList.Delete(intList.GetHeadNode());
         stringList.Delete(stringList.GetHeadNode());
         boolList.Delete(boolList.GetHeadNode());
         testModelList.Delete(testModelList.GetHeadNode());
 
-        AssertLinkedListValues(intList, [intValues[1], intValues[2]]);
-        AssertLinkedListValues(stringList, [stringValues[1], stringValues[2]]);
-        AssertLinkedListValues(boolList, [boolValues[1], boolValues[2]]);
-        AssertLinkedListValues(testModelList, [testModelValues[1], testModelValues[2]]);
+        // Assert
+        AssertLinkedListOrder(intList, [intValues[1], intValues[2]]);
+        AssertLinkedListOrder(stringList, [stringValues[1], stringValues[2]]);
+        AssertLinkedListOrder(boolList, [boolValues[1], boolValues[2]]);
+        AssertLinkedListOrder(testModelList, [testModelValues[1], testModelValues[2]]);
     }
 
     [Test]
     public void Delete_HeadNode_WithNoExistingNextNode_SetsHeadAsEmptyNode_WithDefaultValue()
     {
+        // Arrange
         var (
             (_, intList),
             (_, stringList),
@@ -72,11 +79,13 @@ public class DeleteTests : LinkedListTestBase
             (_, testModelList)
             ) = GenerateTestData(1).SplitIntoTuples();
 
+        // Act
         intList.Delete(intList.GetHeadNode());
         stringList.Delete(stringList.GetHeadNode());
         boolList.Delete(boolList.GetHeadNode());
         testModelList.Delete(testModelList.GetHeadNode());
 
+        // Assert
         intList.GetHeadNode().Should().BeOfType<Node<int>>();
         intList.GetHeadNode().Value.Should().Be(default);
 
@@ -93,13 +102,14 @@ public class DeleteTests : LinkedListTestBase
     [Test]
     public void Delete_LastNode_CorrectlyRemovesLastNode()
     {
+        // Arrange
         var (
             (intValues, intList),
             (stringValues, stringList),
             (boolValues, boolList),
             (testModelValues, testModelList)
             ) = GenerateTestData(2).SplitIntoTuples();
-
+        
         var intNode = intList.GetHeadNode().NextNode;
         var stringNode = stringList.GetHeadNode().NextNode;
         var boolNode = boolList.GetHeadNode().NextNode;
@@ -110,20 +120,23 @@ public class DeleteTests : LinkedListTestBase
         boolNode.Should().NotBeNull();
         testModelNode.Should().NotBeNull();
 
+        // Act
         intList.Delete(intNode);
         stringList.Delete(stringNode);
         boolList.Delete(boolNode);
         testModelList.Delete(testModelNode);
 
-        AssertLinkedListValues(intList, [intValues[0]]);
-        AssertLinkedListValues(stringList, [stringValues[0]]);
-        AssertLinkedListValues(boolList, [boolValues[0]]);
-        AssertLinkedListValues(testModelList, [testModelValues[0]]);
+        // Assert
+        AssertLinkedListOrder(intList, [intValues[0]]);
+        AssertLinkedListOrder(stringList, [stringValues[0]]);
+        AssertLinkedListOrder(boolList, [boolValues[0]]);
+        AssertLinkedListOrder(testModelList, [testModelValues[0]]);
     }
 
     [Test]
     public void Delete_OutOfBoundsPosition_ThrowsException()
     {
+        // Arrange
         var (
             (_, intList),
             (_, stringList),
@@ -131,11 +144,13 @@ public class DeleteTests : LinkedListTestBase
             (_, testModelList)
             ) = GenerateTestData(2).SplitIntoTuples();
 
+        // Act
         var intAction = () => intList.Delete(new Node<int> { Value = TestIntValue });
         var stringAction = () => stringList.Delete(new Node<string> { Value = TestStringValue });
         var boolAction = () => boolList.Delete(new Node<bool> { Value = TestBoolValue });
         var testModelAction = () => testModelList.Delete(new Node<TestModel> { Value = TestModelValue });
 
+        // Assert
         intAction.Should().Throw<NodeNotFoundInListException>();
         stringAction.Should().Throw<NodeNotFoundInListException>();
         boolAction.Should().Throw<NodeNotFoundInListException>();

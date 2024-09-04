@@ -8,21 +8,27 @@ public class MapTests : LinkedListTestBase
     [Test]
     public void Map_ValidValues_ValidFunction_MapsFunctionToValues()
     {
+        // Arrange
         var list = CreateGenericLinkedList<int?>(100, 200, 300);
         var expectedValues = new int?[] { 200, 400, 600 };
 
+        // Act
         var result = list.Map(DoubleInt);
 
-        AssertLinkedListValues(result, expectedValues);
+        // Assert
+        AssertLinkedListOrder(result, expectedValues);
     }
 
     [Test]
     public void Map_NullValues_ValidFunction_ReturnsListOfNulls()
     {
+        // Arrange
         var list = CreateGenericLinkedList<int?>(null, null, null);
 
+        // Act
         var result = list.Map(DoubleInt);
 
-        AssertLinkedListValues(result, new int?[] { null, null, null });
+        // Assert
+        AssertLinkedListOrder(result, new int?[] { null, null, null });
     }
 }

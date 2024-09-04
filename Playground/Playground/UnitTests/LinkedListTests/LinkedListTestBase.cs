@@ -63,7 +63,7 @@ public class LinkedListTestBase
     }
 
     // Reusable method to compare all values on a list with an array of in-order values
-    protected void AssertLinkedListValues<T>(IGenericLinkedList<T> linkedList, IEnumerable<T> expectedValues)
+    protected void AssertLinkedListOrder<T>(IGenericLinkedList<T> linkedList, IEnumerable<T> expectedValues)
     {
         var currentNode = linkedList.GetHeadNode();
 
@@ -76,6 +76,7 @@ public class LinkedListTestBase
         }
     }
 
+    // Give us some sample data to test with
     protected TestDataStruct GenerateTestData(
         int numberOfEachElement,
         int intFloor = int.MinValue,

@@ -11,15 +11,20 @@ public class PrintListTests : LinkedListTestBase
     [Test]
     public void PrintList_EmptyList_ReturnsDefaultValueAsString()
     {
-        var ((_, intList),
+        // Arrange
+        var (
+            (_, intList),
             (_, stringList),
             (_, boolList),
-            (_, testModelList)) = GenerateTestData(0).SplitIntoTuples();
+            (_, testModelList)
+            ) = GenerateTestData(0).SplitIntoTuples();
 
-        AssertLinkedListValues(intList, []);
-        AssertLinkedListValues(stringList, []);
-        AssertLinkedListValues(boolList, []);
-        AssertLinkedListValues(testModelList, []);
+        // Act
+        // Assert
+        AssertLinkedListOrder(intList, []);
+        AssertLinkedListOrder(stringList, []);
+        AssertLinkedListOrder(boolList, []);
+        AssertLinkedListOrder(testModelList, []);
 
         intList.PrintList().Should().Be("0");
         stringList.PrintList().Should().Be(string.Empty);
@@ -30,6 +35,7 @@ public class PrintListTests : LinkedListTestBase
     [Test]
     public void PrintList_WithSingleNode_ReturnsNodeValue()
     {
+        // Arrange
         var (
             (intValues, intList),
             (stringValues, stringList),
@@ -37,6 +43,8 @@ public class PrintListTests : LinkedListTestBase
             (testModelValues, testModelList)
             ) = GenerateTestData(1).SplitIntoTuples();
 
+        // Act
+        // Assert
         intList.PrintList().Should().Be(intValues.First().ToString());
         stringList.PrintList().Should().Be(stringValues.First());
         boolList.PrintList().Should().Be(boolValues.First().ToString());
@@ -46,18 +54,21 @@ public class PrintListTests : LinkedListTestBase
     [Test]
     public void PrintList_ReturnsEveryNodeInCorrectFormat()
     {
+        // Arrange
         var (
             (intValues, intList),
             (stringValues, stringList),
             (boolValues, boolList),
             (testModelValues, testModelList)
             ) = GenerateTestData(3).SplitIntoTuples();
-
+        
         var expectedIntPrint = string.Join(" -> ", intValues);
         var expectedStringPrint = string.Join(" -> ", stringValues);
         var expectedBoolPrint = string.Join(" -> ", boolValues);
         var expectedTestModelPrint = string.Join(" -> ", testModelValues.ToList());
 
+        // Act
+        // Assert
         intList.PrintList().Should().Be(expectedIntPrint);
         stringList.PrintList().Should().Be(expectedStringPrint);
         boolList.PrintList().Should().Be(expectedBoolPrint);
