@@ -56,7 +56,7 @@ public class PrintListTests : LinkedListTestBase
         var expectedIntPrint = string.Join(" -> ", intValues);
         var expectedStringPrint = string.Join(" -> ", stringValues);
         var expectedBoolPrint = string.Join(" -> ", boolValues);
-        var expectedTestModelPrint = string.Join(" -> ", testModelValues);
+        var expectedTestModelPrint = string.Join(" -> ", testModelValues.ToList());
 
         intList.PrintList().Should().Be(expectedIntPrint);
         stringList.PrintList().Should().Be(expectedStringPrint);

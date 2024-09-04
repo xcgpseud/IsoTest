@@ -3,21 +3,21 @@ using UnitTests.Models;
 
 namespace UnitTests.Structs;
 
-public struct TestDataStruct
+public readonly struct TestDataStruct
 {
-    public (IEnumerable<int>, IGenericLinkedList<int>) IntData { get; set; }
+    public (int[], IGenericLinkedList<int>) IntData { get; init; }
 
-    public (IEnumerable<string>, IGenericLinkedList<string>) StringData { get; set; }
+    public (string[], IGenericLinkedList<string>) StringData { get; init; }
 
-    public (IEnumerable<bool>, IGenericLinkedList<bool>) BooleanData { get; set; }
+    public (bool[], IGenericLinkedList<bool>) BooleanData { get; init; }
 
-    public (IEnumerable<TestModel>, IGenericLinkedList<TestModel>) TestModelData { get; set; }
+    public (TestModel[], IGenericLinkedList<TestModel>) TestModelData { get; init; }
 
     public (
-        (IEnumerable<int>, IGenericLinkedList<int>),
-        (IEnumerable<string>, IGenericLinkedList<string>),
-        (IEnumerable<bool>, IGenericLinkedList<bool>),
-        (IEnumerable<TestModel>, IGenericLinkedList<TestModel>)
+        (int[], IGenericLinkedList<int>),
+        (string[], IGenericLinkedList<string>),
+        (bool[], IGenericLinkedList<bool>),
+        (TestModel[], IGenericLinkedList<TestModel>)
         ) SplitIntoTuples()
     {
         return (

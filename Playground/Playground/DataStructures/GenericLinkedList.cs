@@ -61,6 +61,7 @@ public class GenericLinkedList<T> : IGenericLinkedList<T>
         }
 
         var nodeAtPosition = GetNodeAtPosition(position - 1);
+        newNode.NextNode = nodeAtPosition.NextNode;
         nodeAtPosition.NextNode = newNode;
 
         return newNode;

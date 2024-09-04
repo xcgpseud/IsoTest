@@ -9,6 +9,16 @@ namespace UnitTests.LinkedListTests;
 
 public class LinkedListTestBase
 {
+    protected const int TestIntValue = 1000;
+    protected const string TestStringValue = "Hello World";
+    protected const bool TestBoolValue = true;
+
+    protected readonly TestModel TestModelValue = new()
+    {
+        Guid = Guid.NewGuid(),
+        Data = Guid.NewGuid().ToString(),
+    };
+
     protected readonly Func<int?, int?> DoubleInt = x => x * 2;
     protected readonly Func<string?, string?> DoubleString = x => $"{x} {x}";
     protected readonly Func<bool?, bool?> FlipBool = x => !x;
@@ -89,5 +99,4 @@ public class LinkedListTestBase
             TestModelData = (testModelData, CreateGenericLinkedList(testModelData)),
         };
     }
-
 }

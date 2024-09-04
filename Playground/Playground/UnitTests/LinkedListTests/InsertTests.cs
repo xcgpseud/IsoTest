@@ -2,6 +2,7 @@ using NUnit.Framework;
 using DataStructures;
 using DataStructures.Exceptions;
 using FluentAssertions;
+using NUnit.Framework.Internal;
 using UnitTests.Models;
 
 namespace UnitTests.LinkedListTests;
@@ -38,84 +39,135 @@ public class InsertTests : LinkedListTestBase
 
         var intNode = intList.GetHeadNode().NextNode;
         intNode.Should().NotBeNull();
-        intList.Insert(intNode, 1000);
+        intList.Insert(intNode, TestIntValue);
 
         var stringNode = stringList.GetHeadNode().NextNode;
         stringNode.Should().NotBeNull();
-        stringList.Insert(stringNode, "HELLO");
+        stringList.Insert(stringNode, TestStringValue);
 
         var boolNode = boolList.GetHeadNode().NextNode;
         boolNode.Should().NotBeNull();
-        boolList.Insert(boolNode, true);
+        boolList.Insert(boolNode, TestBoolValue);
 
         var testModelNode = testModelList.GetHeadNode().NextNode;
         testModelNode.Should().NotBeNull();
-        testModelList.Insert(
-            testModelNode,
-            new TestModel
-            {
-                Guid = Guid.Empty,
-                Data = "HELLO",
-            }
+        testModelList.Insert(testModelNode, TestModelValue);
+
+        // Check that our nodes are in the expected order
+        AssertLinkedListValues(
+            intList,
+            [intValues[0], intValues[1], TestIntValue, intValues[2]]
         );
 
-        intNode.NextNode?.Value.Should().Be(1000);
-        intNode.NextNode?.NextNode?.Value.Should().Be(intValues.ToArray()[2]);
+        AssertLinkedListValues(
+            stringList,
+            [stringValues[0], stringValues[1], TestStringValue, stringValues[2]]
+        );
 
-        stringNode.NextNode?.Value.Should().Be("HELLO");
-        stringNode.NextNode?.NextNode?.Value.Should().Be(stringValues.ToArray()[2]);
-        
-        boolNode.NextNode?.Value.Should().Be(true);
-        boolNode.NextNode?.NextNode?.Value.Should().Be(boolValues.ToArray()[2]);
+        AssertLinkedListValues(
+            boolList,
+            [boolValues[0], boolValues[1], TestBoolValue, boolValues[2]]
+        );
 
-        testModelNode.NextNode?.Value.Should().NotBeNull();
-        testModelNode.NextNode?.Value?.Guid.Should().Be(Guid.Empty);
-        testModelNode.NextNode?.Value?.Data.Should().Be("HELLO");
+        AssertLinkedListValues(
+            testModelList,
+            [testModelValues[0], testModelValues[1], TestModelValue, testModelValues[2]]
+        );
     }
 
     [Test]
     public void Insert_SupplyFinalNodeAndNewValue_AppendsToList()
     {
-        var list = CreateGenericLinkedList(100, 200, 300);
+        var (
+            (intValues, intList),
+            (stringValues, stringList),
+            (boolValues, boolList),
+            (testModelValues, testModelList)
+            ) = GenerateTestData(2).SplitIntoTuples();
 
-        var finalNode = list.GetHeadNode().NextNode?.NextNode;
-        finalNode.Should().NotBeNull();
+        var finalIntNode = intList.GetHeadNode().NextNode;
+        finalIntNode.Should().NotBeNull();
+        intList.Insert(finalIntNode, TestIntValue);
+        AssertLinkedListValues(intList, [intValues[0], intValues[1], TestIntValue]);
 
-        list.Insert(finalNode, 400);
+        var finalStringNode = stringList.GetHeadNode().NextNode;
+        finalStringNode.Should().NotBeNull();
+        stringList.Insert(finalStringNode, TestStringValue);
+        AssertLinkedListValues(stringList, [stringValues[0], stringValues[1], TestStringValue]);
 
-        list.GetHeadNode().NextNode?.NextNode?.NextNode?.Value.Should().Be(400);
+        var finalBoolNode = boolList.GetHeadNode().NextNode;
+        finalBoolNode.Should().NotBeNull();
+        boolList.Insert(finalBoolNode, TestBoolValue);
+        AssertLinkedListValues(boolList, [boolValues[0], boolValues[1], TestBoolValue]);
+
+        var finalTestModelNode = testModelList.GetHeadNode().NextNode;
+        finalTestModelNode.Should().NotBeNull();
+        testModelList.Insert(finalTestModelNode, TestModelValue);
+        AssertLinkedListValues(testModelList, [testModelValues[0], testModelValues[1], TestModelValue]);
     }
 
     [Test]
     public void Insert_SupplyPositionAndNewValue_InsertsAtGivenPosition()
     {
-        var list = CreateGenericLinkedList(100, 200, 300);
+        var (
+            (intValues, intList),
+            (stringValues, stringList),
+            (boolValues, boolList),
+            (testModelValues, testModelList)
+            ) = GenerateTestData(2).SplitIntoTuples();
 
-        var newNode = list.Insert(0, 10);
+        intList.Insert(1, TestIntValue);
+        AssertLinkedListValues(intList, [intValues[0], TestIntValue, intValues[1]]);
 
-        list.GetHeadNode().Should().Be(newNode);
+        stringList.Insert(1, TestStringValue);
+        AssertLinkedListValues(stringList, [stringValues[0], TestStringValue, stringValues[1]]);
+
+        boolList.Insert(1, TestBoolValue);
+        AssertLinkedListValues(boolList, [boolValues[0], TestBoolValue, boolValues[1]]);
+
+        testModelList.Insert(1, TestModelValue);
+        AssertLinkedListValues(testModelList, [testModelValues[0], TestModelValue, testModelValues[1]]);
     }
 
     [Test]
     public void Insert_SupplyPositionJustAfterLastValue_AppendsToList()
     {
-        var list = CreateGenericLinkedList(100, 200, 300);
+        var (
+            (intValues, intList),
+            (stringValues, stringList),
+            (boolValues, boolList),
+            (testModelValues, testModelList)
+            ) = GenerateTestData(2).SplitIntoTuples();
 
-        var newNode = list.Insert(3, 400);
+        intList.Insert(2, TestIntValue);
+        stringList.Insert(2, TestStringValue);
+        boolList.Insert(2, TestBoolValue);
+        testModelList.Insert(2, TestModelValue);
 
-        list.GetHeadNode()
-            .NextNode?
-            .NextNode?
-            .NextNode.Should().Be(newNode);
+        AssertLinkedListValues(intList, [intValues[0], intValues[1], TestIntValue]);
+        AssertLinkedListValues(stringList, [stringValues[0], stringValues[1], TestStringValue]);
+        AssertLinkedListValues(boolList, [boolValues[0], boolValues[1], TestBoolValue]);
+        AssertLinkedListValues(testModelList, [testModelValues[0], testModelValues[1], TestModelValue]);
     }
 
     [Test]
     public void Insert_SupplyInvalidPosition_ThrowsException()
     {
-        var list = CreateGenericLinkedList(100, 200, 300);
+        var (
+            (intValues, intList),
+            (stringValues, stringList),
+            (boolValues, boolList),
+            (testModelValues, testModelList)
+            ) = GenerateTestData(2).SplitIntoTuples();
 
-        Action action = () => list.Insert(30, 400);
+        var intAction = () => intList.Insert(100, TestIntValue);
+        var stringAction = () => stringList.Insert(100, TestStringValue);
+        var boolAction = () => boolList.Insert(100, TestBoolValue);
+        var testModelAction = () => testModelList.Insert(100, TestModelValue);
 
-        action.Should().Throw<NodeNotFoundInListException>();
+        intAction.Should().Throw<NodeNotFoundInListException>();
+        stringAction.Should().Throw<NodeNotFoundInListException>();
+        boolAction.Should().Throw<NodeNotFoundInListException>();
+        testModelAction.Should().Throw<NodeNotFoundInListException>();
     }
 }
