@@ -1,12 +1,24 @@
 using DataStructures;
 using DataStructures.Models;
 using FluentAssertions;
+using UnitTests.Factories;
 using UnitTests.Models;
+using UnitTests.Structs;
 
 namespace UnitTests.LinkedListTests;
 
 public class LinkedListTestBase
 {
+    protected const int TestIntValue = 1000;
+    protected const string TestStringValue = "Hello World";
+    protected const bool TestBoolValue = true;
+
+    protected readonly TestModel TestModelValue = new()
+    {
+        Guid = Guid.NewGuid(),
+        Data = Guid.NewGuid().ToString(),
+    };
+
     protected readonly Func<int?, int?> DoubleInt = x => x * 2;
     protected readonly Func<string?, string?> DoubleString = x => $"{x} {x}";
     protected readonly Func<bool?, bool?> FlipBool = x => !x;
@@ -25,6 +37,11 @@ public class LinkedListTestBase
 
     protected IGenericLinkedList<T> CreateGenericLinkedList<T>(params T[] values)
     {
+        if (values.Length == 0)
+        {
+            return GenericLinkedList<T>.Create();
+        }
+
         var list = GenericLinkedList<T>.Create(values.First());
         var currentHeadNode = list.GetHeadNode();
 
@@ -57,5 +74,29 @@ public class LinkedListTestBase
 
             currentNode = currentNode.NextNode;
         }
+    }
+
+    protected TestDataStruct GenerateTestData(
+        int numberOfEachElement,
+        int intFloor = int.MinValue,
+        int intCeiling = int.MaxValue
+    )
+    {
+        var intData = TestDataFactory.GenerateRandomNumbers(
+            numberOfEachElement,
+            intFloor,
+            intCeiling
+        ).ToArray();
+        var stringData = TestDataFactory.GenerateRandomStrings(numberOfEachElement).ToArray();
+        var boolData = TestDataFactory.GenerateRandomBooleans(numberOfEachElement).ToArray();
+        var testModelData = TestDataFactory.GenerateRandomTestModels(numberOfEachElement).ToArray();
+
+        return new TestDataStruct
+        {
+            IntData = (intData, CreateGenericLinkedList(intData)),
+            StringData = (stringData, CreateGenericLinkedList(stringData)),
+            BooleanData = (boolData, CreateGenericLinkedList(boolData)),
+            TestModelData = (testModelData, CreateGenericLinkedList(testModelData)),
+        };
     }
 }
