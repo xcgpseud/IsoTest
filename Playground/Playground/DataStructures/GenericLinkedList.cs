@@ -33,14 +33,36 @@ public class GenericLinkedList<T> : IGenericLinkedList<T>
         return HeadNode;
     }
 
-    public INode<T> Insert(INode<T> nodeToInsertAfter, T newNodeValue)
+    public INode<T> Insert(INode<T> nodeToInsertAt, T newNodeValue)
     {
+        // Due to the nature of a linked list we need to iterate to the previous node
+        var currentNode = GetHeadNode();
+        if (currentNode == nodeToInsertAt)
+        {
+            return HeadNode = new Node<T>
+            {
+                Value = newNodeValue,
+                NextNode = currentNode,
+            };
+        }
+
+        while (currentNode.NextNode != null && currentNode.NextNode != nodeToInsertAt)
+        {
+            currentNode = currentNode.NextNode;
+        }
+
+        if (currentNode.NextNode == null && currentNode != nodeToInsertAt)
+        {
+            throw new NodeNotFoundInListException();
+        }
+
         var newNode = new Node<T>
         {
             Value = newNodeValue,
-            NextNode = nodeToInsertAfter.NextNode,
+            NextNode = currentNode.NextNode,
         };
-        nodeToInsertAfter.NextNode = newNode;
+        
+        currentNode.NextNode = newNode;
 
         return newNode;
     }
@@ -67,9 +89,7 @@ public class GenericLinkedList<T> : IGenericLinkedList<T>
         return newNode;
     }
 
-    // The spec said "Insert" should just insert at any position, but I thought realistically an Insert with Append
-    // behaviour might also be nice
-    public INode<T> Insert(T newNodeValue)
+    public INode<T> Append(T newNodeValue)
     {
         var last = GetHeadNode();
         while (last.NextNode != null)
@@ -87,23 +107,17 @@ public class GenericLinkedList<T> : IGenericLinkedList<T>
     {
         var currentNode = GetHeadNode();
 
-        // If we're deleting the head node
         if (currentNode == nodeToDelete)
         {
-            // Set the head node to the one AFTER deletion (or an empty node if that has null as NextNode)
             HeadNode = nodeToDelete.NextNode ?? new Node<T>();
             return;
         }
 
-        // Go until our next node is the one we're deleting (i.e. we have the previous node)
-        while (currentNode?.NextNode != nodeToDelete)
+        while (currentNode.NextNode != nodeToDelete)
         {
-            // If NextNode ends up being null, we coalesce into an Exception as we know
-            // our node doesn't exist in the list at this point
             currentNode = currentNode?.NextNode ?? throw new NodeNotFoundInListException();
         }
 
-        // And now we simply set the previous node's next node to the one after the deleted one
         currentNode.NextNode = nodeToDelete.NextNode;
     }
 
@@ -136,28 +150,20 @@ public class GenericLinkedList<T> : IGenericLinkedList<T>
         var currentNode = GetHeadNode();
         var response = "";
 
-        // We have nothing in this list at all
         if (currentNode.Value == null && currentNode.NextNode == null)
         {
-            // It felt better to stick with an empty string and not return "null" in the case of null non-string objects
             return "";
         }
 
-        // Traverse through nodes and add their value with a delimiter to the string
         while (currentNode.NextNode != null)
         {
             response += $"{currentNode.Value} -> ";
             currentNode = currentNode.NextNode;
         }
 
-        // Last one is left off due to the nature of our while loop, but this actually serves us well as there is no
-        // need for a check to see if the next one exists. We can just add it without the delimiter.
         response += currentNode.Value;
 
         return response;
-
-        // (Alternatively you could loop values, add them to a list and then string.Join the list, but you iterate
-        // twice which feels wasteful)
     }
 
     private INode<T> GetNodeAtPosition(int position)

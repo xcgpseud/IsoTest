@@ -6,13 +6,11 @@ public interface IGenericLinkedList<T>
 {
     public INode<T> GetHeadNode();
 
-    // I opted to return the inserted node once created - some languages have a void response here
-    public INode<T> Insert(INode<T> nodeToInsertAfter, T newNodeValue);
+    public INode<T> Insert(INode<T> nodeToInsertAt, T newNodeValue);
 
     public INode<T> Insert(int position, T newNodeValue);
 
-    // Will append to the last node
-    public INode<T> Insert(T newNodeValue);
+    public INode<T> Append(T newNodeValue);
 
     // Deletes the given node and bridges the gap
     public void Delete(INode<T> nodeToDelete);
