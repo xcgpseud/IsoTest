@@ -5,9 +5,9 @@ name: .NET
 
 on:
   push:
-    branches: [ "main", "extra_features" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main", "extra_features" ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -21,11 +21,11 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      working-directory: ./TechTest/IsometrixTechTest
+      working-directory: ./Playground/Playground
       run: dotnet restore
     - name: Build
-      working-directory: ./TechTest/IsometrixTechTest
+      working-directory: ./Playground/Playground
       run: dotnet build --no-restore
     - name: Test
-      working-directory: ./TechTest/IsometrixTechTest/UnitTests
+      working-directory: ./Playground/Playground/UnitTests
       run: dotnet test --no-build --verbosity minimal

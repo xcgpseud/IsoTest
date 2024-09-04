@@ -11,11 +11,14 @@ public class CreateTests : LinkedListTestBase
     [Test]
     public void Create_NoValue_CreatesListWithEmptyNode()
     {
+        // Arrange
+        // Act
         var intList = GenericLinkedList<int>.Create();
         var stringList = GenericLinkedList<string>.Create();
         var boolList = GenericLinkedList<bool>.Create();
         var objectList = GenericLinkedList<TestModel>.Create();
 
+        // Assert
         intList.GetHeadNode().Value.Should().Be(0);
         stringList.GetHeadNode().Value.Should().BeNull();
         boolList.GetHeadNode().Value.Should().Be(false);
@@ -25,25 +28,24 @@ public class CreateTests : LinkedListTestBase
     [Test]
     public void Create_WithValue_CreatesListWithFilledNode()
     {
-        const int testIntData = 10;
-        const string testStringData = "hello world";
-        const bool testBoolData = true;
-        const string testObjectData = "Test Model Data";
-
-        var intList = GenericLinkedList<int>.Create(testIntData);
-        var stringList = GenericLinkedList<string>.Create(testStringData);
-        var boolList = GenericLinkedList<bool>.Create(testBoolData);
-        var objectList = GenericLinkedList<TestModel>.Create(
+        // Arrange
+        // Act
+        var intList = GenericLinkedList<int>.Create(TestIntValue);
+        var stringList = GenericLinkedList<string>.Create(TestStringValue);
+        var boolList = GenericLinkedList<bool>.Create(TestBoolValue);
+        var testModelList = GenericLinkedList<TestModel>.Create(
             new TestModel
             {
-                Id = 1,
-                Data = testObjectData,
+                Guid = TestModelValue.Guid,
+                Data = TestModelValue.Data,
             }
         );
 
-        intList.GetHeadNode().Value.Should().Be(testIntData);
-        stringList.GetHeadNode().Value.Should().Be(testStringData);
-        boolList.GetHeadNode().Value.Should().Be(testBoolData);
-        objectList.GetHeadNode().Value?.Data.Should().Be(testObjectData);
+        // Assert
+        intList.GetHeadNode().Value.Should().Be(TestIntValue);
+        stringList.GetHeadNode().Value.Should().Be(TestStringValue);
+        boolList.GetHeadNode().Value.Should().Be(TestBoolValue);
+        testModelList.GetHeadNode().Value?.Guid.Should().Be(TestModelValue.Guid);
+        testModelList.GetHeadNode().Value?.Data.Should().Be(TestModelValue.Data);
     }
 }
